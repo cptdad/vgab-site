@@ -12,6 +12,8 @@ run.html        → https://vgab.eu/run.html       Rún — product page
 privacy.html    → https://vgab.eu/privacy.html   Rún — privacy policy
 support.html    → https://vgab.eu/support.html   Rún — support
 style.css       shared styles
+favicon.ico     "VG" favicon — multi-size (16/32/48/64/256)
+favicon.svg     "VG" favicon — scalable (modern browsers)
 CNAME           custom-domain marker for GitHub Pages (contains: vgab.eu)
 ```
 
