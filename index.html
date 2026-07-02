@@ -14,11 +14,25 @@
   <div class="hero">
     <img class="logo" src="logo.png" alt="Vikstrom Group AB">
     <p class="tagline">A Swedish IT consultancy, building privacy-first products.</p>
+    <nav class="hero-nav">
+      <a href="run.html">Rún</a> · <a href="privacy.html">Privacy</a> · <a href="support.html">Support</a> · <a href="#contact">Contact</a>
+    </nav>
   </div>
 
   <h2>About the company</h2>
-  <p>Vikstrom Group AB is a Swedish limited company (aktiebolag), registered in Sweden. We build privacy-first software — applications designed so that strong end-to-end encryption and minimal data collection are core requirements rather than afterthoughts.</p>
-  <p>Our current product is <a href="run.html">Rún</a>, an end-to-end encrypted messenger that routes its traffic over the Tor network and keeps no user accounts and no logs. We develop, publish, and support it ourselves.</p>
+  <p>Vikstrom Group AB is a Swedish limited company (aktiebolag) based in Stockholm. We design and build software where privacy is the starting point rather than an afterthought: strong end-to-end encryption, minimal data collection, and the absence of tracking are engineering requirements we design around from the first line of code.</p>
+  <p>We develop and publish our own products and take on selected consultancy work in the same areas — secure mobile development and applied cryptography. Our current focus is <a href="run.html">Rún</a>, a private messenger for iOS and Android that we develop, publish, and support ourselves.</p>
+
+  <h2>What we do</h2>
+
+  <h3>Privacy-first product development</h3>
+  <p>We take products from idea to the App&nbsp;Store and Google&nbsp;Play: architecture, native development for iOS and Android (Swift and Kotlin Multiplatform), release engineering, and long-term maintenance. Every product is built on the principle that data which is never collected cannot be leaked, sold, or demanded.</p>
+
+  <h3>Applied cryptography</h3>
+  <p>End-to-end encryption, forward secrecy, authenticated key exchange, and key material held in the platform's secure storage. We treat the server as part of the threat model: our systems are designed so that infrastructure only ever handles sealed ciphertext it cannot read.</p>
+
+  <h3>Network privacy</h3>
+  <p>Metadata can be as sensitive as message content. We build systems that route traffic over the Tor network, pad messages to fixed sizes so observers cannot infer their length, and keep no connection logs — so the infrastructure learns as little as technically possible about who is talking to whom.</p>
 
   <h2>Products</h2>
   <div class="products">
@@ -28,18 +42,36 @@
       <span class="more">Learn more →</span>
     </a>
   </div>
+  <ul>
+    <li><strong>No accounts.</strong> No phone number, email address, or username — contacts pair directly with each other.</li>
+    <li><strong>End-to-end encrypted</strong>, with forward secrecy on the message channel. Only the two devices in a conversation hold the keys.</li>
+    <li><strong>Routed over Tor.</strong> The relay never learns your IP address, and it only ever holds sealed, fixed-size ciphertext.</li>
+    <li><strong>Local encrypted vault.</strong> Conversations live on your device, protected by a PIN-derived key, never on a server.</li>
+    <li><strong>No analytics, no advertising, no third-party trackers</strong> — in the app or on this website.</li>
+  </ul>
+  <p>Rún is in development for iOS and Android. See the <a href="privacy.html">privacy policy</a> for a precise account of what the app does and does not handle, and the <a href="support.html">support page</a> for help and FAQ.</p>
 
-  <h2>Contact</h2>
+  <h2>How we work</h2>
+  <ul>
+    <li><strong>Data minimisation by default.</strong> We start from &ldquo;collect nothing&rdquo; and justify every exception, rather than the reverse.</li>
+    <li><strong>The server is an adversary.</strong> Designs must remain private even if the infrastructure is compromised or compelled.</li>
+    <li><strong>Established cryptography only.</strong> We build on well-studied primitives and protocols — no home-grown ciphers.</li>
+    <li><strong>Continuous review.</strong> Security-relevant code is audited and re-audited as the products evolve.</li>
+  </ul>
+
+  <h2 id="contact">Contact</h2>
   <p>
     General enquiries: <a href="mailto:info@vgab.eu">info@vgab.eu</a><br>
     Rún support: <a href="mailto:run@vgab.eu">run@vgab.eu</a>
   </p>
+  <p class="muted">We aim to answer within a few business days.</p>
 
   <h2>Company details</h2>
   <p class="muted">
     Vikstrom Group AB<br>
     Organisationsnummer: 559065&#8209;3183<br>
-    Registered office: Grafikvägen 12, 121 43 Johanneshov, Sweden
+    Registered office: Grafikvägen 12, 121 43 Johanneshov, Sweden<br>
+    Website: <a href="https://vgab.eu">https://vgab.eu</a>
   </p>
 
   <footer>
