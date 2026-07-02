@@ -49,7 +49,10 @@
     <img class="logo" src="logo.png" alt="Vikstrom Group AB">
     <p class="tagline">A Swedish IT consultancy, building privacy-first products.</p>
     <nav class="hero-nav">
-      <a href="run.html">Rún</a> · <a href="privacy.html">Privacy</a> · <a href="support.html">Support</a> · <a href="#contact">Contact</a>
+      <a href="run.html">Rún</a>
+      <a href="privacy.html">Privacy</a>
+      <a href="support.html">Support</a>
+      <a href="#contact">Contact</a>
     </nav>
   </div>
 
@@ -58,15 +61,20 @@
   <p>We develop and publish our own products and take on selected consultancy work in the same areas — secure mobile development and applied cryptography. Our current focus is <a href="run.html">Rún</a>, a private messenger for iOS and Android that we develop, publish, and support ourselves.</p>
 
   <h2>What we do</h2>
-
-  <h3>Privacy-first product development</h3>
-  <p>We take products from idea to the App&nbsp;Store and Google&nbsp;Play: architecture, native development for iOS and Android (Swift and Kotlin Multiplatform), release engineering, and long-term maintenance. Every product is built on the principle that data which is never collected cannot be leaked, sold, or demanded.</p>
-
-  <h3>Applied cryptography</h3>
-  <p>End-to-end encryption, forward secrecy, authenticated key exchange, and key material held in the platform's secure storage. We treat the server as part of the threat model: our systems are designed so that infrastructure only ever handles sealed ciphertext it cannot read.</p>
-
-  <h3>Network privacy</h3>
-  <p>Metadata can be as sensitive as message content. We build systems that route traffic over the Tor network, pad messages to fixed sizes so observers cannot infer their length, and keep no connection logs — so the infrastructure learns as little as technically possible about who is talking to whom.</p>
+  <div class="cards">
+    <article class="feature">
+      <h3>Privacy-first product development</h3>
+      <p>From idea to the App&nbsp;Store and Google&nbsp;Play: architecture, native development for iOS and Android (Swift and Kotlin Multiplatform), release engineering, and long-term maintenance. Data that is never collected cannot be leaked, sold, or demanded.</p>
+    </article>
+    <article class="feature">
+      <h3>Applied cryptography</h3>
+      <p>End-to-end encryption, forward secrecy, authenticated key exchange, and key material held in the platform's secure storage. We treat the server as part of the threat model: infrastructure only ever handles sealed ciphertext it cannot read.</p>
+    </article>
+    <article class="feature">
+      <h3>Network privacy</h3>
+      <p>Metadata can be as sensitive as message content. We route traffic over the Tor network, pad messages to fixed sizes, and keep no connection logs — so infrastructure learns as little as technically possible about who is talking to whom.</p>
+    </article>
+  </div>
 
   <h2>Products</h2>
   <div class="products">
@@ -109,7 +117,13 @@
   </p>
 
   <footer>
-    © 2026 Vikstrom Group AB · Org. nr 559065&#8209;3183 · <a href="mailto:info@vgab.eu">info@vgab.eu</a>
+    <span>© 2026 Vikstrom Group AB · Org. nr 559065&#8209;3183</span>
+    <nav>
+      <a href="run.html">Rún</a>
+      <a href="privacy.html">Privacy</a>
+      <a href="support.html">Support</a>
+      <a href="mailto:info@vgab.eu">info@vgab.eu</a>
+    </nav>
   </footer>
 </div>
 </body>
