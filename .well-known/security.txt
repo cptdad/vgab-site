@@ -1,0 +1,5 @@
+Contact: mailto:run@vgab.eu
+Expires: 2027-07-01T00:00:00.000Z
+Preferred-Languages: en, sv
+Canonical: https://vgab.eu/.well-known/security.txt
+Policy: https://vgab.eu/support.html
