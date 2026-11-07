@@ -27,123 +27,146 @@
   </header>
 
   <h1>Privacy Policy — Rún</h1>
-  <p class="meta">Effective date: 2026-07-31 · Last updated: 2026-07-31</p>
+  <p class="meta">Effective date: 2026-11-03 · Last updated: 2026-11-03</p>
 
-  <p>This Privacy Policy explains how the Rún application (&ldquo;Rún&rdquo;, the &ldquo;App&rdquo;) handles information. The App is provided by Vikstrom Group AB (&ldquo;we&rdquo;, &ldquo;us&rdquo;). Contact: <a href="mailto:run@vgab.eu">run@vgab.eu</a>.</p>
+  <h2>Overview</h2>
+  <p>Rún is a secure messaging application designed to protect your privacy. This policy explains what data the app handles, what the message relay keeps, and which outside parties can be involved. It is written to match what the shipped apps and the relay actually do; where a feature is optional, it says so and says what turning it on discloses.</p>
 
-  <h2>Summary (the short version)</h2>
+  <h2>Data Collection</h2>
+  <p><strong>Rún does not collect, transmit, or store any personal data on external servers.</strong></p>
   <ul>
-    <li><strong>No account.</strong> Rún has no sign-up, login, username, email, or phone number.</li>
-    <li><strong>We do not collect personal data.</strong> No analytics, no advertising, no tracking, no third-party trackers, no profiles.</li>
-    <li><strong>Your messages are end-to-end encrypted.</strong> Only you and the person you are messaging can read them. We cannot.</li>
-    <li><strong>Connections run over the Tor network</strong>, so our relay never learns your IP address.</li>
-    <li><strong>Our relay keeps no logs.</strong> No IP addresses, no access history — it holds only undelivered, unreadable ciphertext until it reaches the recipient.</li>
-    <li><strong>Messages are ephemeral</strong> and stored only on your device, encrypted.</li>
-    <li><strong>Two optional features can involve Google or Apple</strong> — push notifications and the in-app tip jar — and only if you turn them on. Both are off until you act, and the F-Droid/direct build contains no Google code at all. See section 1.</li>
-    <li><strong>We do not sell, rent, or share your data</strong> with anyone — there is nothing to sell.</li>
-    <li><strong>Removing the App</strong> from your device erases everything Rún stored there.</li>
+    <li>No account registration required</li>
+    <li>No email, phone number, or name collected</li>
+    <li>No analytics, tracking, advertising, or crash-reporting service of any kind</li>
+    <li>No crash reports sent anywhere</li>
+  </ul>
+  <p>Out of the box, a Rún install talks to exactly one party: the message relay, over Tor. It sends the relay nothing about you or your device beyond the encrypted message traffic itself.</p>
+  <p>Three <strong>optional</strong> things can send more, and each is off, absent, or user-initiated until you act: the diagnostics described under <strong>Diagnostics You Can Choose to Send</strong>, push notifications, and the tip jar. Neither the relay nor any third party ever receives message content.</p>
+
+  <h2>Data Stored on Your Device</h2>
+  <p>All data is stored locally on your device, encrypted with AES-256 via SQLCipher. Opening the vault requires <strong>two</strong> factors together — your PIN or passphrase, and a device key held by the platform keystore (Android Keystore or iOS Keychain). Neither one alone can decrypt it.</p>
+  <p>The device key is hardware-rooted <strong>at rest</strong>: it is non-exportable and tied to this specific handset, so copying the vault files to another machine does not make them readable. We want to be precise about the limit of that, because it is easy to overstate: by default the device key is not held inside a dedicated secure chip while the app is running, so on a device that is powered on and already unlocked, the practical strength of your vault rests on your PIN or passphrase — which is why the higher protection levels require a long passphrase rather than a short PIN. Enabling the optional biometric / Secure Enclave binding adds a hardware barrier that must be satisfied on the device itself before the vault key can be used at all.</p>
+  <p>Both the Android and iOS apps use the same encrypted vault design:</p>
+  <ul>
+    <li><strong>PIN or passphrase credentials</strong> — Salted and stretched with a memory-hard KDF (Argon2id), then stored only as a one-way verifier. Never stored in plaintext.</li>
+    <li><strong>Contact aliases</strong> — User-chosen pseudonyms. No real names or identifiers are stored.</li>
+    <li><strong>Messages</strong> — Never written to disk. A message exists only in memory while its conversation is open and is destroyed when the conversation closes (burn-after-read); it is never persisted at rest.</li>
+    <li><strong>Relay inbox addresses</strong> — Opaque, proof-of-work-minted addresses plus bearer capability tokens, used only to route messages. They are not derived from you and contain no identifying information.</li>
+    <li><strong>Shared secrets and message keys</strong> — Cryptographic keys exchanged via QR code, and the per-conversation ratchet state derived from them. Encrypted at rest.</li>
+    <li><strong>Optional recovery code</strong> — If you enable it, a code you hold is the only other thing that can open the vault. The app stores only an encrypted blob that the code unlocks; the code itself is never stored.</li>
   </ul>
 
-  <h2>1. Which build you have</h2>
-  <p>Rún ships in more than one build, and two sections below differ between them. If you are unsure which you have, it is the F-Droid/direct build unless you installed from Google Play.</p>
+  <h2>Data Transmitted</h2>
   <ul>
-    <li><strong>F-Droid / direct-download (Android):</strong> contains <strong>no Google code at all</strong> — no Firebase, no Google Play Services, no Play Billing. Push notifications are not offered on this build, and the in-app tip jar is absent.</li>
-    <li><strong>Google Play (Android):</strong> the same app, plus two Google libraries — the <strong>Firebase Cloud Messaging</strong> SDK, used only if you turn notifications on, and <strong>Google Play Billing</strong>, used only if you open the optional tip jar.</li>
-    <li><strong>iOS:</strong> a single build. Optional notifications use Apple's Push Notification service and the optional tip jar uses StoreKit — both Apple operating-system services rather than bundled third-party SDKs.</li>
-  </ul>
-  <p>Neither the messaging itself nor anything in section 3 changes between builds: messages are end-to-end encrypted and routed over Tor in every case.</p>
-
-  <h2>2. Information we do not collect</h2>
-  <p>We do not ask for, collect, or store:</p>
-  <ul>
-    <li>Your name, email address, phone number, or any account identifier.</li>
-    <li>Your address book or contacts.</li>
-    <li>Your location.</li>
-    <li>Device identifiers used for advertising or tracking.</li>
-    <li>Usage analytics or behavioural data. Rún contains no advertising SDKs, no analytics SDKs, and no third-party trackers.</li>
+    <li><strong>Messages</strong> are encrypted end-to-end before leaving the device. Text conversations use a Double Ratchet with fresh keys per message (forward secrecy) once both sides have sent something; texts you send before anything has arrived back from a new contact, and the small control signals described below, use a static AES-256-GCM envelope under the shared secret from your QR exchange, so a one-sided conversation stays on that envelope until the other side replies. The relay server only sees opaque encrypted blobs and cannot read message content.</li>
+    <li><strong>Relay communication always goes over Tor.</strong> The app ships its own Tor client and reaches the relay only as a Tor onion service. A production build refuses to talk to the relay any other way: if Tor is unavailable, messaging is simply off — it never falls back to a direct connection. Neither the relay nor your internet provider can learn your IP address or location from relay traffic.</li>
+    <li><strong>Minimal metadata</strong> — no read receipts, typing indicators, or user identifiers are transmitted. A coarse per-message timestamp (rounded down to the minute) travels <em>inside</em> the end-to-end-encrypted envelope, so it is readable only by your contact — never by the relay server or your network.</li>
+    <li><strong>Control signals</strong> — a few small end-to-end-encrypted notices travel between contacts the same way messages do: a one-time &ldquo;new inbox&rdquo; announcement when you pair, group membership changes, and — on iOS — a notice to the other person if you take a screenshot of a conversation. Each is encrypted to your contact; the relay cannot read them.</li>
+    <li><strong>Push wake-up signals</strong> — only if you turn notifications on. These are content-free; see <strong>Third-Party Services</strong> below.</li>
+    <li><strong>Update notice</strong> — the relay tells the app the latest published version number as part of every normal reply. This involves no extra request and nothing is sent to ask for it; the app only compares the number against its own.</li>
   </ul>
 
-  <h2>3. Information stored only on your device (never sent to us)</h2>
-  <p>The following is created and kept locally on your device, inside an encrypted vault, and is never transmitted to us:</p>
+  <h3>External proxy mode (Android, optional)</h3>
+  <p>Instead of the built-in Tor, you can point the app at a SOCKS5 proxy you run yourself on your own device or local network. The app then sends every relay request to that proxy and does not start its own Tor. This exists so that you can inspect exactly what the app sends, or use a Tor client you already trust. Whoever controls that proxy and the network hop to it can see the app's request metadata (never message content, which stays end-to-end encrypted); the app warns you about this when the proxy is on your local network rather than on the phone itself. If the proxy is unreachable, messaging stops — the app does not fall back to anything else.</p>
+
+  <h2>Diagnostics You Can Choose to Send</h2>
+  <p>Nothing in this section happens unless you act. All of it goes to the message relay only, over Tor, and none of it carries anything that identifies you or your device.</p>
   <ul>
-    <li><strong>Your contacts</strong> (the cryptographic keys and aliases you create when pairing with someone in person). Contact data is generated on-device; we never upload or receive your contact list.</li>
-    <li><strong>Your messages.</strong> Read and sent messages are erased automatically when you close the App; unread incoming messages persist only until you read them. Messages exist in plaintext only in memory while you are viewing a conversation.</li>
-    <li><strong>A PIN-protected vault.</strong> We do not store your PIN. Your PIN is used on-device to derive the key that encrypts your vault; only a locally stored verifier (not the PIN itself) is kept so the App can recognise a correct PIN.</li>
-    <li><strong>Encryption keys</strong>, held in the device's secure storage (Apple Keychain on iOS / Android Keystore), never leaving the device.</li>
+    <li><strong>Report a bug (both platforms, one tap).</strong> The settings screen has a &ldquo;Report bug&rdquo; form. When you send it, the relay receives the text you typed, the app version, and the platform name (&ldquo;android&rdquo; or &ldquo;ios&rdquo;) — nothing else, and no identifier of any kind. The relay keeps reports for <strong>90 days</strong> and then deletes them. Please do not paste message content into a report.</li>
+    <li><strong>Debug mode (both platforms, off by default, behind a consent dialog).</strong> While you keep it on, the app streams its own diagnostic log to the relay about once a second so that connection problems can be investigated. The log is scrubbed before it leaves the device: no names or aliases, no message content, no addresses, no keys, no inbox or contact identifiers, no network identifiers. While Debug mode is on, the app also sends one short <strong>connect-time report</strong> after each successful connection: the platform name, the app version, how many seconds the connection took (rounded up to 5 seconds), and a coded list of which connection phases took how long. The relay keeps debug logs for <strong>14 days</strong> and connect-time reports for <strong>30 days</strong>, then deletes them. Turning Debug mode off stops both immediately; a wipe clears the setting. Nothing in this section is sent on a device where Debug mode is off.</li>
   </ul>
-  <p>You control this data entirely. It is destroyed when you wipe the vault, when the App's automatic safeguards trigger (repeated incorrect PIN entry or long inactivity), or when you uninstall the App.</p>
+  <p>Because these requests go over the same Tor connection the app is already using for its messages, the relay can tell that a given report or log came from the session that was just connected. That is inherent in sending them at all, and it is why their contents carry nothing the relay cannot already see from the connection itself.</p>
 
-  <h2>4. Information our relay handles</h2>
-  <p>To deliver messages between two people who are not online at the same time, Rún sends and retrieves messages through a relay server we operate. The relay is deliberately &ldquo;dumb&rdquo;: it stores sealed, fixed-size (padded) ciphertext addressed to randomly generated, opaque inbox identifiers.</p>
-  <p>The relay keeps <strong>no logs</strong>. It does not record access logs, request logs, IP addresses (it cannot see them — connections arrive over Tor), inbox-access history, or timing/metadata about who fetched or posted what. It maintains no user accounts and no profiles.</p>
-  <p>What the relay <strong>cannot</strong> see or do:</p>
+  <h2>Camera Permission</h2>
+  <p>The camera is used <strong>exclusively</strong> for scanning QR codes during contact exchange and when moving to a new device. No images or video are captured, stored, or transmitted. Camera frames are processed in memory and immediately discarded.</p>
+
+  <h2>Internet Permission</h2>
+  <p>Internet access is used to run the built-in Tor client and, through it, to communicate with the message relay server (sending and receiving encrypted messages). That is the <strong>only</strong> network activity in a default install. The same Tor connection carries the optional diagnostics above if — and only if — you send them. Separately, the operating system's own push service and the store's billing and review libraries reach their own providers if — and only if — you turn notifications on, open the tip jar, or accept a review prompt; see <strong>Third-Party Services</strong> below.</p>
+
+  <h2>What the Relay Keeps</h2>
+  <p>The relay is operated by the app provider. It cannot read any message. Here is what it holds, and for how long:</p>
   <ul>
-    <li>It cannot read your messages — it only ever holds end-to-end-encrypted ciphertext.</li>
-    <li>It cannot identify you — there are no accounts, and Tor hides your IP address.</li>
-    <li>It cannot tell how long your messages are — payloads are padded to fixed-size buckets.</li>
-  </ul>
-  <p>The only data the relay holds at any moment is the set of currently-undelivered encrypted blobs and their opaque inbox identifiers. To route a message it transiently processes that identifier and ciphertext in memory, but it persists none of it beyond storing the pending blob until delivery.</p>
-  <p><strong>Retention:</strong> a message blob is removed from the relay once it has been delivered to its recipient; inboxes that are never used expire automatically after a long period of inactivity. Because the relay keeps no logs, nothing about your activity persists on our servers beyond pending, unreadable ciphertext.</p>
-
-  <h2>5. Notifications (off unless you turn them on)</h2>
-  <p>Notifications are <strong>disabled by default</strong>. Out of the box Rún reaches the network only while you have it open, and on the Google Play build the Firebase SDK's automatic start-up is switched <strong>off</strong> in the app manifest, so it does not contact Google at launch or register your device merely because the app is installed.</p>
-  <p>If you do turn notifications on:</p>
-  <ul>
-    <li>Your device registers with <strong>Google</strong> (Play build) or <strong>Apple</strong> (iOS) to receive push messages, in the ordinary way any app does.</li>
-    <li>What is sent is a <strong>content-free wake-up signal</strong> — no message text, no sender, no conversation, no inbox identifier. Google or Apple learn only that something arrived for this device and roughly when.</li>
-    <li>The message itself is still fetched over Tor from our relay and decrypted on your device after you unlock it. We do not send message content through Google or Apple, and they cannot read anything.</li>
-    <li>The app explains exactly this on the screens shown before the on/off switch.</li>
-  </ul>
-  <p>Turning notifications off revokes the registration, and a vault wipe also asks Google or Apple to invalidate it — that last request needs a working network connection, so on an offline device it is best-effort. It makes no practical difference: a wipe destroys the vault and the inbox a notification would have pointed at, so a surviving registration has nothing left to signal about.</p>
-  <p>Because this involves Google's or Apple's services, their handling of the registration and the wake-up signal is governed by their own privacy policies, not ours. The F-Droid/direct build has no notification capability at all.</p>
-
-  <h2>6. The Tor network</h2>
-  <p>Rún routes its connection to the relay through the Tor network so that the relay (and any network observer) cannot learn your IP address. Tor is operated by the Tor Project and independent volunteers; it is a third-party network and its use is subject to the Tor Project's terms and privacy practices. Rún uses Tor solely for its own connection to our relay — it is not a general-purpose proxy or VPN and does not route any other app's traffic.</p>
-
-  <h2>7. Permissions</h2>
-  <ul>
-    <li><strong>Camera:</strong> requested only when you choose to add a contact by scanning their QR code. Camera frames are processed on-device to read the code and are never stored or transmitted. Rún does not access your photo library.</li>
-    <li><strong>Network access:</strong> in a default install, used only to connect to the relay over Tor as described above. Two opt-in features add an exception: push notifications (section 5) and the in-app tip jar (section 8), each of which contacts Google or Apple only if you turn it on or open it.</li>
+    <li><strong>Encrypted message blobs</strong> are held in memory only, never written to persistent storage, and are deleted once the recipient has received them or when they expire, whichever comes first: ordinary messages after <strong>24 hours</strong>, pairing and other control signals after at most <strong>7 days</strong>.</li>
+    <li><strong>Inbox records</strong> — the opaque inbox address, a one-way hash of its capability tokens, its expiry time, and a lockout counter — are kept while the inbox is in use. A freshly created inbox expires after <strong>90 days</strong> if never used; one that has been used by its owner is kept for up to <strong>one year</strong> of inactivity, so that long-quiet contacts can still reach you. These records are periodically written to disk on an encrypted volume so that a relay restart does not disconnect every user. They contain no message content and nothing that identifies you.</li>
+    <li><strong>Push registrations</strong> — if you turn notifications on, the relay stores the push token (or UnifiedPush endpoint) alongside each of your inboxes, in the same inbox records, so it can send the wake-up signal. A push token is a device address issued by Google, Apple, or your UnifiedPush server; the relay stores it as received. Turning notifications off, or wiping the app, asks the relay to delete it.</li>
+    <li><strong>Diagnostics</strong> you chose to send, for the retention periods given above.</li>
+    <li><strong>Relay logs.</strong> The relay writes an operational log (errors, counts, and startup configuration), which is also forwarded to a log server operated by the app provider. No log line carries an inbox address, a capability token, a push token, or message data. The web server in front of the relay keeps no access log.</li>
   </ul>
 
-  <h2>8. Donations and tips</h2>
-  <p>Support for the project is entirely optional and there are two ways to give, neither of which is enabled or opened unless you choose it.</p>
+  <h2>Data Deletion</h2>
   <ul>
-    <li><strong>Cryptocurrency (all builds).</strong> Rún may display a Monero address. This is informational only: the App does not process payments and does not receive or store any wallet or payment information. A donation is a transaction you initiate yourself, outside the App, on a public blockchain governed by its own rules — not by us.</li>
-    <li><strong>In-app tip jar (Google Play build and iOS only).</strong> If you open the tip screen, the purchase is handled entirely by <strong>Google Play Billing</strong> or <strong>Apple StoreKit</strong>. We receive no card, bank or payment details, and the tip is not linked to any identity or account inside the App — there is none. The store's own privacy policy governs the transaction. This screen is absent from the F-Droid/direct build, which contains no billing library.</li>
+    <li>Messages are never written to disk on your device; they are destroyed when the conversation closes.</li>
+    <li><strong>Automatic self-wipe is always on, but its thresholds depend on the protection level you chose</strong> (Decent / Secure / Maximum — picked at first run, changeable in Settings). The app wipes itself if it has not been opened for the period below, and after that many consecutive incorrect unlock attempts:
+      <table>
+        <thead>
+          <tr><th>Protection level</th><th>Wiped if unopened for</th><th>Wiped after this many wrong attempts</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Decent</td><td>180 days</td><td>10</td></tr>
+          <tr><td>Secure</td><td>90 days</td><td>8</td></tr>
+          <tr><td>Maximum</td><td>7 days</td><td>5</td></tr>
+        </tbody>
+      </table>
+      <p>The 7-day / 5-attempt figures are <strong>Maximum's</strong> values only — on Decent or Secure your vault survives far longer without being opened and tolerates more wrong attempts. A wipe erases the encryption keys themselves, so whatever remains on disk is unrecoverable. A wipe also asks the relay to delete any push registration, clears Debug mode, and clears the external proxy setting.</p>
+    </li>
+    <li>Uninstalling the app deletes the encrypted database and app data. On iOS, a small number of key-protection items may remain in the system Keychain until you reinstall the app (which purges them) or reset the device; these are unusable without your PIN or passphrase.</li>
+    <li>No data is backed up to any cloud service. Backup is explicitly disabled.</li>
+    <li>Your inboxes on the relay expire on their own per the schedule above; there is nothing in them that identifies you.</li>
   </ul>
 
-  <h2>9. Platform-level diagnostics</h2>
-  <p>Rún does not include crash-reporting or diagnostics SDKs. If you have separately opted in, at the operating-system level, to share diagnostics with developers, Apple or Google may provide us aggregated, anonymised crash information. This is governed by Apple's or Google's privacy policies, is outside Rún's control, and never includes message content.</p>
+  <h2>Third-Party Services</h2>
+  <p><strong>No build of Rún, on either platform, contains an analytics, tracking, advertising, or crash-reporting SDK</strong>, and none of your data is ever sent to such a service. Apart from the message relay, the only outside parties Rún can involve are the ones below, and each stays dormant unless you act.</p>
 
-  <h2>10. Data sharing</h2>
-  <p>We do not sell, rent, trade, or share your information with third parties for any purpose. We have no personal data to share. We may disclose information only if required by valid legal process — but because we keep no logs, hold no accounts, receive no IP addresses, and store only unreadable ciphertext addressed to opaque identifiers, there is effectively nothing identifying for us to disclose.</p>
-
-  <h2>11. Security</h2>
-  <p>Rún is built around strong, standard cryptography: end-to-end encryption of messages (AES-256-GCM, with keys exchanged in person and the text channel additionally protected by a Double Ratchet so that past messages stay secret even if a later key is compromised), on-device vault encryption, message padding to resist size analysis, and connectivity over Tor.</p>
-  <p>Opening your vault requires two things together — your PIN or passphrase, and a device key held by the platform keystore (Android Keystore or Apple Keychain). Neither alone can decrypt it. We want to be precise about the limit of that, because it is easy to overstate: the device key is tied to that specific handset and cannot be copied off it, but by default it is not held inside a dedicated secure chip while the app is running, so on a device that is powered on and already unlocked the practical strength of your vault rests on your PIN or passphrase — which is why the higher protection levels require a long passphrase rather than a short PIN. Enabling the optional biometric binding adds a hardware barrier that must be satisfied on the device itself before the vault key can be used at all.</p>
-  <p>No system is perfectly secure, and you are responsible for safeguarding your device and your PIN or passphrase.</p>
-
-  <h2>12. Data retention and deletion</h2>
+  <h3>Android</h3>
+  <p>There is <strong>one</strong> Android build, distributed through Google Play and as a direct download. It contains the Firebase Cloud Messaging (FCM) library, the Google Play Billing library, the Google Play In-App Review library, and the UnifiedPush connector. None of them does anything until you use the feature it serves.</p>
   <ul>
-    <li><strong>On your device:</strong> read and sent messages are erased when you close the App. You can wipe the entire vault at any time, and uninstalling the App removes all of its data from your device.</li>
-    <li><strong>On the relay:</strong> delivered messages are removed; unused inboxes expire after long inactivity; and no logs are kept, so nothing about your activity remains. To clear pending data sooner, open the App so it retrieves your messages.</li>
+    <li><strong>Push notifications — off unless you turn them on.</strong> Notifications are disabled by default; out of the box Rún reaches the network only while you have it open. The Firebase library's automatic start-up is switched <strong>off</strong> in the app manifest, so it does not contact Google at launch or register your device merely because the app is installed. If you turn notifications on, the app picks a transport:
+      <ul>
+        <li><strong>On a phone with Google Play services</strong>, your device registers with Google's FCM and receives a <strong>content-free wake-up signal</strong> — no message text, no sender, no conversation. Google learns only that something arrived for this device and roughly when.</li>
+        <li><strong>On a phone without Google Play services</strong> (for example a de-Googled phone), the app uses <strong>UnifiedPush</strong>: you install a distributor app of your choice (such as ntfy) and the wake-up signal travels through the push server that distributor uses — which may be a third-party server you do not operate. That server learns the same thing Google would: that something arrived for this device and roughly when, and nothing more. The distributor and its server are chosen and controlled by you, not by us.</li>
+      </ul>
+      <p>In either case the message itself is fetched over Tor and decrypted on your phone after you unlock it. The app explains exactly this in the screens shown before the on/off switch. Turning notifications off revokes the registration, and every wipe asks the relay to delete it too — that last request needs a working network connection, so on an offline device it is best-effort. It makes no practical difference to you: a wipe destroys the vault and the inbox the notification would have pointed at, so a surviving registration has nothing left to signal about.</p>
+    </li>
+    <li><strong>Tip jar — only if you open it.</strong> The optional donation screen uses Google Play Billing. The purchase is handled entirely by Google Play; Rún receives no payment details, and the tip is not linked to any account inside the app.</li>
+    <li><strong>Review prompt — only if you accept it.</strong> After you have used the app for a while, it may once ask whether you would like to rate it. If you say yes, the Google Play In-App Review flow opens; that flow is Google's, runs under Google's own privacy policy, and sends nothing from Rún. Declining sends nothing, and the app does not ask again. The counters that decide when to ask live inside your encrypted vault.</li>
   </ul>
 
-  <h2>13. Children</h2>
-  <p>Rún is not directed to children under 13 (or the minimum age required in your country), and we do not knowingly collect information from children. As the App collects no personal data, it does not gather information from any user.</p>
+  <h3>iOS</h3>
+  <p>There is one iOS build. Optional notifications use Apple's Push Notification service, the optional tip jar uses StoreKit, and the optional review prompt uses Apple's standard rating sheet — all Apple operating-system services rather than bundled third-party SDKs.</p>
+  <ul>
+    <li><strong>Push notifications — off unless you turn them on.</strong> If you turn them on, your device registers with Apple and receives a <strong>content-free wake-up signal</strong> — no message text, no sender, no conversation. Apple learns only that something arrived for this device and roughly when. Everything else works as described for Android above, including what turning notifications off and wiping do.</li>
+    <li><strong>Tip jar — only if you open it.</strong> Handled entirely by the App Store through StoreKit; Rún receives no payment details.</li>
+    <li><strong>Review prompt — only if you accept it.</strong> Apple's rating sheet; the same once-only rule as on Android.</li>
+    <li><strong>Reporting a contact.</strong> The &ldquo;report&rdquo; option in a conversation opens a prefilled email to the app provider in your own mail app. Nothing is sent until you choose to send that email, and it contains only what you see in the draft.</li>
+  </ul>
+  <p>Everything else — messages, contacts, keys, and the optional diagnostics — communicates only with the message relay server, which is operated by the app provider, is reached over Tor, and holds only what <strong>What the Relay Keeps</strong> describes.</p>
 
-  <h2>14. Your rights (GDPR / CCPA and similar laws)</h2>
-  <p>Privacy laws such as the GDPR and CCPA give you rights to access, correct, or delete personal data a service holds about you, and not to have it sold. Because we operate no accounts and do not collect or hold personal data about you, there is generally nothing for us to access, correct, delete, or sell on our side. You already hold and control all of your data on your own device and can erase it instantly. We do not sell personal information.</p>
+  <h3>The Tor network</h3>
+  <p>Rún reaches the relay through the Tor network so that neither the relay nor a network observer can learn your IP address. Tor is run by the Tor Project and independent volunteers; it is a third-party network and its use is subject to the Tor Project's own practices. Rún uses Tor solely for its own connection to the relay — it is not a general-purpose proxy or VPN and routes no other app's traffic.</p>
 
-  <h2>15. International use</h2>
-  <p>Rún is available internationally. Strong encryption may be regulated in some jurisdictions; you are responsible for ensuring your use of the App is lawful where you are.</p>
+  <h3>Donations</h3>
+  <p>The support screen shows cryptocurrency addresses (Monero and Bitcoin) for voluntary donations. This is informational only: the app processes no payment, receives and stores no wallet information, and a donation is a transaction you make yourself, outside the app, on a public blockchain governed by its own rules.</p>
 
-  <h2>16. Changes to this policy</h2>
-  <p>We may update this Privacy Policy from time to time. We will revise the &ldquo;Last updated&rdquo; date above and, where appropriate, note changes within the App or on <a href="https://vgab.eu/privacy.html">https://vgab.eu/privacy.html</a>.</p>
+  <h3>Operating-system diagnostics</h3>
+  <p>Rún contains no crash-reporting SDK and sends no crash reports. If you have separately opted in, at the operating-system level, to share diagnostics with developers, Apple or Google may provide the app provider with aggregated, anonymised crash information. That is governed by Apple's or Google's privacy policies, is outside Rún's control, and never includes message content.</p>
 
-  <h2>17. Contact</h2>
-  <p>Questions about this Privacy Policy or Rún's privacy practices: <a href="mailto:run@vgab.eu">run@vgab.eu</a></p>
+  <h2>Data Sharing and Legal Requests</h2>
+  <p>We do not sell, rent, trade, or share your information with anyone, for any purpose — there is no personal data to share. We would disclose information only if required by valid legal process. Because the relay holds no accounts, sees no IP addresses, and stores only unreadable ciphertext addressed to opaque identifiers, there is effectively nothing identifying for us to disclose; the most it could produce is the retention-bounded material listed under <strong>What the Relay Keeps</strong>, none of which names a person or device.</p>
+
+  <h2>Your Rights</h2>
+  <p>Privacy laws such as the GDPR and CCPA give you rights to access, correct, or delete personal data a service holds about you, and not to have it sold. Because we operate no accounts and hold no personal data about you, there is nothing on our side to access, correct, delete, or sell. You already hold all of your data on your own device and can erase it instantly. If you have sent a bug report or Debug mode logs and want them deleted before their retention period ends, contact us; since they carry no identifier, you will need to tell us roughly when they were sent and from which platform so we can find them.</p>
+
+  <h2>International Use</h2>
+  <p>Rún is available internationally. Strong encryption is regulated in some jurisdictions; you are responsible for ensuring your use of the app is lawful where you are.</p>
+
+  <h2>Children's Privacy</h2>
+  <p>Rún does not knowingly collect any data from children under 13. The app does not collect data from anyone.</p>
+
+  <h2>Changes to This Policy</h2>
+  <p>Any changes to this privacy policy will be reflected in app updates. The &ldquo;last updated&rdquo; date at the top of this document will be revised accordingly.</p>
+
+  <h2>Contact</h2>
+  <p>For questions about this privacy policy, contact: <a href="mailto:cptdad12@proton.me">cptdad12@proton.me</a></p>
 
   <footer>
     <span>© 2026 Vikstrom Group AB · Org. nr 559065&#8209;3183</span>

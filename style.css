@@ -83,3 +83,8 @@ footer nav{display:flex;gap:16px;flex-wrap:wrap}
   .hero .tagline{font-size:17px}
   footer{flex-direction:column;gap:8px}
 }
+
+/* Tables (privacy policy: protection-level timers) */
+table { border-collapse: collapse; width: 100%; margin: 0.75rem 0; font-size: 0.95em; }
+th, td { text-align: left; padding: 0.4rem 0.6rem; border-bottom: 1px solid rgba(0,0,0,0.12); vertical-align: top; }
+th { font-weight: 600; }

@@ -70,16 +70,23 @@
     </article>
     <article class="feature">
       <h3>Nothing to track</h3>
-      <p>No analytics, no advertising, no trackers, no crash reporting that leaves your device — on any build. The F-Droid/direct build goes further and contains no Google code at all; the Play build adds Firebase Messaging and Play Billing, used only if you turn on notifications or open the tip jar. What we cannot see, we cannot lose, sell, or hand over.</p>
+      <p>No analytics, no advertising, no trackers, no crash reporting that leaves your device. Two optional features can involve Google or Apple, and only if you turn them on: notifications (a content-free wake-up signal through Apple's or Google's push service, or through a UnifiedPush app you choose on a phone without Google services) and the in-app tip jar. What we cannot see, we cannot lose, sell, or hand over.</p>
     </article>
   </div>
 
+  <h2>Source code</h2>
+  <div class="card">
+    <p>The client's source code is published under the GNU GPL at <a href="https://github.com/cptdad/run">github.com/cptdad/run</a>. You can read it, build the app yourself and compare it with what you run: <code>BUILDING.md</code> takes you from a fresh clone to an app on your own device, and <code>docs/SECURITY_OVERVIEW.md</code> states the threat model and where each protection stops.</p>
+    <p>The relay server's code is not published yet. The client is built to stay safe against a relay that lies, and <code>docs/RELAY_SPEC.md</code> describes what the relay stores, for how long, and what it logs. The code is reviewed internally on every change; there has been no independent security audit. Vulnerabilities: see <code>SECURITY.md</code> in the repository, which carries a PGP key.</p>
+  </div>
+
   <div class="btn-row">
+    <a class="btn" href="https://github.com/cptdad/run">Source code</a>
     <a class="btn" href="privacy.html">Privacy Policy</a>
     <a class="btn" href="support.html">Support &amp; FAQ</a>
   </div>
 
-  <p class="muted">Rún is in development for iOS and Android.</p>
+  <p class="muted">Rún is available for iOS on the <a href="https://apps.apple.com/app/id6762006510">App Store</a> and for Android on <a href="https://play.google.com/store/apps/details?id=com.vg.run">Google Play</a>.</p>
 
   <footer>
     <span>© 2026 Vikstrom Group AB · Org. nr 559065&#8209;3183</span>
